@@ -58,7 +58,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: kHighlands
+                        color: kPrimary
                       )
                     ),
                     textStyle: TextStyle(
@@ -86,7 +86,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: kHighlands,
+                      backgroundColor: kPrimary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)
                       ),

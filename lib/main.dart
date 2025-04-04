@@ -1,4 +1,5 @@
-import 'package:app_shopping/screen/register_screen.dart';
+import 'package:app_shopping/screen/InfoRegister.dart';
+
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           debugShowCheckedModeBanner: false,
-          home: const RegisterScreen(),
+          home: Inforegister(),
         );
       },
     );

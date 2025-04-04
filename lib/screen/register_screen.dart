@@ -55,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: 20.h),                
                 TextFormField(
                 controller: phoneController,
-                cursorColor: kHighlands,
+                cursorColor: kPrimary,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: "Nhập số điện thoại",
@@ -109,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     });
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: kHighlands,
+                    backgroundColor: kPrimary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -139,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   
                   }, child: Text("Đăng nhập",
                     style: TextStyle(
-                        color: kHighlands,
+                        color: kPrimary,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,                             
                       ),
