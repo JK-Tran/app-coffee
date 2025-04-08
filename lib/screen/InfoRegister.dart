@@ -9,7 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class Inforegister extends StatefulWidget {
-  const Inforegister({super.key});
+  final String uid;
+  final String phoneNumber;
+  const Inforegister({super.key, required this.uid, required this.phoneNumber});
 
   @override
   State<Inforegister> createState() => _InforegisterState();

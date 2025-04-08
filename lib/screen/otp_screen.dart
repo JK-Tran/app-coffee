@@ -1,13 +1,17 @@
 import 'package:app_shopping/constants/constants.dart';
+import 'package:app_shopping/screen/InfoRegister.dart';
 import 'package:app_shopping/services/firebase_auth_service.dart';
+import 'package:app_shopping/widgets/custom_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
-   final String verificationId; // Thêm tham số này
-  const OtpScreen({super.key, required this.verificationId});
+  final String verificationId; // Thêm tham số này
+  final String phoneNumber;
+  const OtpScreen({super.key, required this.verificationId, required this.phoneNumber});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -15,7 +19,8 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final FirebaseAuthService _authService = FirebaseAuthService();
-  TextEditingController otpController = TextEditingController();
+  final TextEditingController otpController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,37 +76,16 @@ class _OtpScreenState extends State<OtpScreen> {
                   },
                 ),  
                 SizedBox(height: 20.h,),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                  onPressed: () async {
+                CustomButton(text: "Xác nhận", onPressed: () async {
                       String smsCode = otpController.text.trim();
-                      bool isVerified = await _authService.verifyOtp(widget.verificationId, smsCode);
-                      
-                      if (isVerified) {
-                        Get.snackbar("Thành công", "Xác thực OTP thành công");
+                      User? user = await _authService.verifyOtp(widget.verificationId, smsCode);
+                      if (user != null) {
+                        // Truyền UID sang màn hình đăng ký thông tin
+                        Get.to(() => Inforegister(uid: user.uid, phoneNumber: widget.phoneNumber));
                       } else {
                         Get.snackbar("Lỗi", "Mã OTP không hợp lệ");
                       }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kPrimary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
-                    ),
-                    child: Text("Xác nhận",
-                    
-                    style: TextStyle(
-                        color: kWhite,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold         
-                      ),
-                    ),
-                  ),
-                )           
+                    },backgroundColor: kPrimary, textColor: kWhite, fontSize: 22.sp, fontWeight: FontWeight.bold),
               ]            
           ),
         ),

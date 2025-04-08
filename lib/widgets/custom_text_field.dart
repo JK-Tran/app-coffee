@@ -7,13 +7,14 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final bool isPassword;
   final TextInputType keyboardType;
-  
+  final InkWell? prefixIcon;
   const CustomTextField({
     super.key, 
     required this.controller,
     required this.hintText, 
     this.isPassword = false, 
-    required this.keyboardType  
+    required this.keyboardType, 
+    this.prefixIcon  
   });
 
   @override
@@ -38,6 +39,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: kPrimary,width: 2.0)
+        ),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: widget.prefixIcon,
         ),
         suffixIcon: widget.isPassword ? 
           IconButton(

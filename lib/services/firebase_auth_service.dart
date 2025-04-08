@@ -24,20 +24,17 @@ class FirebaseAuthService {
 }
 
   // Xác thực OTP
- Future<bool> verifyOtp(String verificationId, String smsCode) async {
+ Future<User?> verifyOtp(String verificationId, String smsCode) async {
   try {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: smsCode,
     );
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-    String uid = userCredential.user?.uid ?? "";
-
-    print("✅ Đăng nhập thành công, UID: $uid");
-    return true;
+    UserCredential userCredential = await _auth.signInWithCredential(credential);
+    return userCredential.user;
   } catch (e) {
     print("Lỗi xác thực OTP: $e");
-    return false;
+    return null;
   }
 }
 
