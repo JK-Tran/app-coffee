@@ -1,4 +1,6 @@
-import 'package:app_shopping/constants/constants.dart';
+import 'package:app_shopping/constants/Constants.dart';
+import 'package:app_shopping/providers/register_provider.dart';
+import 'package:app_shopping/screen/login_screen.dart';
 import 'package:app_shopping/screen/otp_screen.dart';
 import 'package:app_shopping/services/firebase_auth_service.dart';
 import 'package:app_shopping/widgets/custom_text_field.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -76,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                     },
                     child: Text(
-                      selectedCountry.flagEmoji,
+                      "${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}",
                       style: TextStyle(
                           fontSize: 18.sp,
                           color: kDark,
@@ -96,9 +99,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           "+${selectedCountry.phoneCode}${phoneController.text.trim()}";
                       //Gửi mã OTP có verificationId
                       await _authService.sendOtp(phoneNumber, (verificationId) {
-                        Get.to(() => OtpScreen(
-                            verificationId: verificationId,
-                            phoneNumber: phoneNumber));
+                        final provider = Provider.of<RegisterProvider>(context,listen: false);
+                        provider.setPhoneNumber(phoneNumber);
+                        provider.setVerificationId(verificationId);
+
+                        Get.to(() =>
+                            const OtpScreen()); // Không cần truyền constructor nữa
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -127,16 +133,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "Đã có tài khoản?",
                       style: TextStyle(fontSize: 16.sp, color: kDark),
                     ),
-                    TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Đăng nhập",
+                    SizedBox(width: 5.w),
+                    InkWell(
+                      onTap: (){
+                        Get.off(LoginScreen());
+                      },child:Text(
+                          "Đăng nhập",                         
                           style: TextStyle(
                             color: kPrimary,
                             fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                           ),
-                        ))
+                        ),
+                    )
                   ],
                 )
               ],

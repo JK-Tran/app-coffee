@@ -1,9 +1,26 @@
+import 'package:app_shopping/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:app_shopping/constants/constants.dart'; // Đảm bảo đã khai báo kPrimary và kWhite
+import 'package:app_shopping/constants/Constants.dart';
+import 'package:get/get.dart'; // Đảm bảo đã khai báo kPrimary và kWhite
 
-class RegisterSuccessScreen extends StatelessWidget {
+class RegisterSuccessScreen extends StatefulWidget {
   const RegisterSuccessScreen({super.key});
+
+  @override
+  State<RegisterSuccessScreen> createState() => _RegisterSuccessScreenState();
+}
+
+class _RegisterSuccessScreenState extends State<RegisterSuccessScreen> {
+
+  @override
+  void initState() {
+  super.initState();
+    // Chờ 2 giây rồi chuyển sang HomeScreen
+    Future.delayed(Duration(seconds: 3), () {
+      Get.offAll(() => HomeScreen(),transition: Transition.rightToLeft,duration: Duration(milliseconds: 800));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

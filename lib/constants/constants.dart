@@ -1,10 +1,9 @@
 import 'dart:ui';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 String googleApiKey = '';
-const String appBaseUrl = '';
+final String baseUrl = "http://192.168.0.105:3001/api";
 
 //color
 const kPrimary = Color(0xFF4C2013);

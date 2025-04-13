@@ -1,3 +1,4 @@
+import 'package:app_shopping/services/logger_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthService {
@@ -13,10 +14,10 @@ class FirebaseAuthService {
       await _auth.signInWithCredential(credential);
     },
     verificationFailed: (FirebaseAuthException e) {
-      print("❌ Lỗi gửi OTP: ${e.message}");
+      LoggerServices.error("Lỗi gửi OTP: ${e.message}");
     },
     codeSent: (String verId, int? resendToken) {
-      print("📩 OTP đã gửi! verificationId: $verId");
+     LoggerServices.info("📩 OTP đã gửi! verificationId: $verId");
       onCodeSent(verId); // Gửi verificationId sang màn hình OTP
     },
     codeAutoRetrievalTimeout: (String verId) {},
@@ -33,8 +34,8 @@ class FirebaseAuthService {
     UserCredential userCredential = await _auth.signInWithCredential(credential);
     return userCredential.user;
   } catch (e) {
-    print("Lỗi xác thực OTP: $e");
-    return null;
+    LoggerServices.error("Lỗi xác thực OTP: $e");
+    return null; 
   }
 }
 

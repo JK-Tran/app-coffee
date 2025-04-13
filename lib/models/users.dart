@@ -40,4 +40,24 @@ class Users {
       'dob':dob
     };
   }
+
+   Users copyWith({
+    String? uid,
+    String? phoneNumber,
+    String? firstName,
+    String? lastName,
+    String? password,
+    String? email,
+    String? dob,
+  }) {
+    return Users(
+      uid: uid ?? this.uid,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      password: password ?? this.password,
+      email: email ?? this.email,
+      dob: dob ?? this.dob,
+    );
+  }
 }
