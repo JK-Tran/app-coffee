@@ -1,4 +1,4 @@
-class Users {
+class User {
   final String uid;
   final String phoneNumber;
   final String firstName;
@@ -7,7 +7,7 @@ class Users {
   final String? email;
   final String? dob;
 
-  Users({
+  User({
     required this.uid,
     required this.phoneNumber,
     required this.firstName,
@@ -17,11 +17,11 @@ class Users {
     required this.dob
   });
 
-  factory Users.fromMap(Map<String, dynamic> data) {
-    return Users(
+  factory User.fromMap(Map<String, dynamic> data) {
+    return User(
       uid: data['uid'] ?? '',
       phoneNumber: data['phoneNumber'] ?? '',
-      firstName: data['firtName'] ?? '',
+      firstName: data['firstName'] ?? '',
       lastName: data['lastName'] ?? '',
       password: data['password'] ?? '',
       email: data['email'],
@@ -41,7 +41,7 @@ class Users {
     };
   }
 
-   Users copyWith({
+   User copyWith({
     String? uid,
     String? phoneNumber,
     String? firstName,
@@ -50,7 +50,7 @@ class Users {
     String? email,
     String? dob,
   }) {
-    return Users(
+    return User(
       uid: uid ?? this.uid,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       firstName: firstName ?? this.firstName,

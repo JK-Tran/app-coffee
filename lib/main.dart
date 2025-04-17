@@ -3,6 +3,7 @@ import 'package:app_shopping/providers/register_provider.dart';
 import 'package:app_shopping/screen/register_screen.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,10 +17,19 @@ void main() async {
   //   androidProvider: AndroidProvider.playIntegrity,
   //   appleProvider: AppleProvider.deviceCheck,
   // );
+  
+  // await FirebaseAppCheck.instance.activate(
+  //   androidProvider: AndroidProvider.debug, // Chế độ debug cho Android
+  //   appleProvider: AppleProvider.debug,    // Chế độ debug cho iOS
+  // );
   await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug, // Chế độ debug cho Android
-    appleProvider: AppleProvider.debug,    // Chế độ debug cho iOS
-  );
+  androidProvider: kReleaseMode
+      ? AndroidProvider.playIntegrity
+      : AndroidProvider.debug,
+  appleProvider: kReleaseMode
+      ? AppleProvider.deviceCheck
+      : AppleProvider.debug,
+);
   runApp(
     MultiProvider(
       providers: [

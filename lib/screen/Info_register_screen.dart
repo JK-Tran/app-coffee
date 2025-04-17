@@ -103,7 +103,7 @@ class _InforegisterScreenState extends State<InforegisterScreen> {
                     try{
                       final dio = Dio();
                       final response = await dio.post(
-                        "$baseUrl/users/register",
+                        "$baseUrlRender/users/register",
                         data: {
                           "uid": uid,
                           "phoneNumber": phoneNumber,

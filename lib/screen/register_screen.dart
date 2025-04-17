@@ -1,8 +1,11 @@
 import 'package:app_shopping/constants/Constants.dart';
+import 'package:app_shopping/models/request/send_otp_request.dart';
 import 'package:app_shopping/providers/register_provider.dart';
 import 'package:app_shopping/screen/login_screen.dart';
 import 'package:app_shopping/screen/otp_screen.dart';
 import 'package:app_shopping/services/firebase_auth_service.dart';
+import 'package:app_shopping/services/logger_services.dart';
+import 'package:app_shopping/widgets/custom_button.dart';
 import 'package:app_shopping/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -90,38 +93,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  // Chiều rộng full màn hình
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      String phoneNumber =
-                          "+${selectedCountry.phoneCode}${phoneController.text.trim()}";
-                      //Gửi mã OTP có verificationId
-                      await _authService.sendOtp(phoneNumber, (verificationId) {
-                        final provider = Provider.of<RegisterProvider>(context,listen: false);
-                        provider.setPhoneNumber(phoneNumber);
-                        provider.setVerificationId(verificationId);
+                CustomButton(
+                  text: "Đăng ký",
+              onPressed: () async {
+                    // ✅ Lấy những thứ cần từ context trước await
+                    final provider = Provider.of<RegisterProvider>(context, listen: false);
+                    final scaffoldMessenger = ScaffoldMessenger.of(context);
+                    final navigator = Navigator.of(context);
 
-                        Get.to(() =>
-                            const OtpScreen()); // Không cần truyền constructor nữa
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kPrimary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
-                    ),
-                    child: Text(
-                      "Đăng ký",
-                      style: TextStyle(
-                          color: kWhite,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                    String phoneNumber = "+${selectedCountry.phoneCode}${phoneController.text.trim().replaceFirst("0", "")}";       
+
+                    try {
+                      final response = await _authService.sendOTP(SendOtpRequest(phoneNumber: phoneNumber));
+
+                      if (response.success) {
+                        provider.setPhoneNumber(phoneNumber);
+                        provider.setVerificationId(response.verificationId);
+
+                        LoggerServices.info("📞 Gửi OTP đến $phoneNumber");
+
+                        navigator.push(
+                          MaterialPageRoute(builder: (_) => const OtpScreen()),
+                        );
+                      } else {
+                        scaffoldMessenger.showSnackBar(
+                          const SnackBar(content: Text("❌ Không thể gửi OTP")),
+                        );
+                      }
+                    } catch (e) {
+                      scaffoldMessenger.showSnackBar(
+                        SnackBar(content: Text("❌ Lỗi gửi OTP: $e")),
+                      );
+                    }
+                  },
+                  backgroundColor: kPrimary,
+                  textColor: kWhite,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
                 ),
                 SizedBox(
                   height: 10.h,
@@ -135,16 +143,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     SizedBox(width: 5.w),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Get.off(LoginScreen());
-                      },child:Text(
-                          "Đăng nhập",                         
-                          style: TextStyle(
-                            color: kPrimary,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      },
+                      child: Text(
+                        "Đăng nhập",
+                        style: TextStyle(
+                          color: kPrimary,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
                     )
                   ],
                 )

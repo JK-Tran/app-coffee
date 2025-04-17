@@ -1,7 +1,11 @@
 import 'package:app_shopping/constants/Constants.dart';
+import 'package:app_shopping/screen/home/home_screen.dart';
 import 'package:app_shopping/screen/register_screen.dart';
+import 'package:app_shopping/services/logger_services.dart';
+import 'package:app_shopping/widgets/custom_button.dart';
 import 'package:app_shopping/widgets/custom_text_field.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -83,34 +87,31 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),  
-                 SizedBox( height: 20.h),
+                SizedBox( height: 20.h),
                 CustomTextField(controller: passwordController, hintText: "Nhập mật khẩu", keyboardType: TextInputType.text,isPassword: true,),              
                 SizedBox( height: 20.h),
-                SizedBox(
-                  width: double.infinity,
-                  // Chiều rộng full màn hình
-                  child: ElevatedButton(
-                    onPressed: () async {
-                     
-
-                    
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kPrimary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
-                    ),
-                    child: Text(
-                      "Đăng nhập",
-                      style: TextStyle(
-                          color: kWhite,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+                CustomButton(text: "Đăng nhập",
+                 onPressed: () async{
+                  try{
+                    final dio = Dio();
+                    String phoneNumber = "+${selectedCountry.phoneCode}${phoneController.text.trim()}";
+                    final response = await dio.post(
+                      "$baseUrlRender/users/login",
+                      data: {
+                          "phoneNumber": phoneNumber,
+                          "password":passwordController
+                        }
+                    );
+                    if (response.statusCode == 201) {                      
+                      Get.offAll(() => HomeScreen());
+                    } else {
+                      Get.snackbar("Lỗi", "Đăng ký thất bại");
+                    }
+                  }catch(e){
+                    Get.snackbar("Lỗi", "Có lỗi xảy ra");
+                    LoggerServices.error("Lỗi xảy ra $e");
+                  }
+                }, backgroundColor: kPrimary, textColor: kWhite, fontSize: 18.sp, fontWeight: FontWeight.bold),
                 SizedBox(
                   height: 10.h,
                 ),
