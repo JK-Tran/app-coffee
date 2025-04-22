@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 String googleApiKey = '';
-final String baseUrl = "http://192.168.0.105:3001/api";
+final String baseUrl = "http://192.168.1.78:3001/api";
 final String baseUrlRender = "https://nodejs-app-coffee.onrender.com/api"; 
 
 //color
@@ -19,6 +19,11 @@ const kWhite = Color(0xFFFFFFFF);
 const kDark = Color(0xFF000000);
 const kOffWhite = Color(0xFFF3F4F8);
 
+
+const kSuccess = Color(0xFF16C47F);
+const kError = Color(0xFFF93827);
+const kWarning = Color(0xFFFF9D23);
+const kInfo = Color(0xFF1B56FD);
 
   
 //footsie

@@ -8,13 +8,16 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword;
   final TextInputType keyboardType;
   final InkWell? prefixIcon;
+   final String? Function(String?)? validator;
   const CustomTextField(
       {super.key,
       required this.controller,
       required this.hintText,
       this.isPassword = false,
       required this.keyboardType,
-      this.prefixIcon});
+      this.prefixIcon, 
+      this.validator
+    });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -28,6 +31,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscureText: widget.isPassword ? _isObscure : false,
+      validator: widget.validator,
       cursorColor: kPrimary,
       decoration: InputDecoration(
        contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),

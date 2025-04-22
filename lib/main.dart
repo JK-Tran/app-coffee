@@ -1,6 +1,6 @@
-import 'package:app_shopping/providers/auth_provider.dart';
 import 'package:app_shopping/providers/register_provider.dart';
 import 'package:app_shopping/screen/register_screen.dart';
+import 'package:app_shopping/view_models/register_view_model.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -32,9 +32,9 @@ void main() async {
 );
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      providers: [       
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
+        ChangeNotifierProvider(create: (_) => RegisterViewModel()),
       ],
       child: MyApp(),
     ),
